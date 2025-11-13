@@ -146,9 +146,7 @@ A simple **star schema** improves Power BI performance and simplifies joins for 
 
 ---
 
-### 📊 Dashboard Pages
-| Page | Focus | Description |
-|------|--------|-------------|
+### 📊 Dashboard Page
 <img width="452" height="251" alt="image" src="https://github.com/user-attachments/assets/c66b7655-bc6c-4ae5-8044-7c5b0ff70b19" />
 
 | **Executive Overview** | National totals & category trends | 20.51 M patients (July 2025 peak) |
