@@ -94,14 +94,20 @@ To analyse NHS hospital waiting-time trends (Apr–Jul 2025), identify bottlenec
 | Northern Care Alliance NHS Foundation Trust | 1,405,700 |
 | Barts Health NHS Trust | 1,383,074 |
 
-### ⏱ Patients by Wait Category
-- 78 % of classified patients seen within **0–18 weeks**  
-- 17.6 % between **18–52 weeks**  
-- ≈ 4 % waited > 1 year  
+### Patients by Wait Category
+
+	•	78% of records fall under “Other”, indicating unclassified or miscoded wait bands (major data-quality issue).
+	•	17.6% waited 0–18 weeks
+	•	4.2% waited 18–52 weeks
+	•	Very small proportion waited 52+ weeks
+
+	
+	
 <img width="452" height="162" alt="image" src="https://github.com/user-attachments/assets/b46fc26e-dd51-4373-8188-542b97bd2ffa" />
 
 > Around 78 % of all records fell under “Other,” due to unclassified bands — a key data-quality issue.
-
+> 
+Although the dashboard suggests performance distribution, nearly 78% of records fall into ‘Other’, which limits meaningful analysis. This highlights a significant data classification issue that needs addressing before drawing conclusions on waiting time performance
 ### 📈 Trend ( Apr → Jul 2025 )
 - Steady increase in total patients  
 - Short wait ( 0–18 weeks ) dominates volume  
@@ -147,18 +153,24 @@ A simple **star schema** improves Power BI performance and simplifies joins for 
 ---
 
 ### 📊 Dashboard Page
-<img width="452" height="251" alt="image" src="https://github.com/user-attachments/assets/c66b7655-bc6c-4ae5-8044-7c5b0ff70b19" />
 
 | **Executive Overview** | National totals & category trends | 20.51 M patients (July 2025 peak) |
-<img width="452" height="251" alt="image" src="https://github.com/user-attachments/assets/238f18d4-6f06-40fd-9eef-c37cdddecf64" />
+<img width="817" height="458" alt="Screenshot 2026-02-17 at 14 14 34" src="https://github.com/user-attachments/assets/b0ef25d7-604a-44be-8ec6-58b98ddca891" />
+
 
 | **Provider Performance** | Top 10 trusts | Manchester & Essex handle 20 % load |
-<img width="452" height="251" alt="image" src="https://github.com/user-attachments/assets/54aa7e5d-0d69-4c08-a40c-844307e4f274" />
+<img width="817" height="459" alt="Screenshot 2026-02-17 at 14 18 37" src="https://github.com/user-attachments/assets/d07f35d1-31bc-4c85-929c-d2eed0066160" />
+
+
 
 | **Wait-Time Distribution** | Performance vs target | 78 % ≤ 18 weeks, 4 % > 1 year |
-<img width="452" height="250" alt="image" src="https://github.com/user-attachments/assets/2900cb78-7ea9-4be6-ad8e-1dbb1c2b7486" />
+
+<img width="816" height="458" alt="Screenshot 2026-02-17 at 14 19 27" src="https://github.com/user-attachments/assets/5225306c-8868-4ca1-8828-97a70c567f0d" />
 
 | **Forecast (Time Series)** | Predictive insight | Stable through Q3 2025 |
+
+
+<img width="813" height="456" alt="Screenshot 2026-02-17 at 14 20 11" src="https://github.com/user-attachments/assets/046ad24e-cf93-4298-8c8f-4050fab5bbfc" />
 
 ---
 
