@@ -1,16 +1,16 @@
-
-
-
 ### 🇬🇧 NHS Hospital Waiting Times Analysis (April – July 2025)
 
 ![diverse-group-people-waiting-hospital-reception-lobby-attend-medical-appointment-with-general-practitioner-patients-waiting-room-lobby-sitting-healthcare-clinic-tripod-shot](https://github.com/user-attachments/assets/466b58b2-c3a6-4b49-a18a-fc57444f2323)
-
 
 **Author:** Mohd Nafees  
 🎓 MSc Data Science — Birkbeck, University of London  
 📧 [nafees.mohd.datascientist25@gmail.com](mailto:nafees.mohd.datascientist25@gmail.com)  
 🔗 [LinkedIn](https://www.linkedin.com/in/mohd-nafees-59863524b/)  
 📍 London    🗓 November 2025  
+
+---
+
+🖥️ **[Live interactive dashboard](https://combatant94.github.io/nhs-waiting-times-analysis-2025/dashboard/)** — explore all 477 providers, sort by volume or by long-wait / unclassified-data share
 
 ---
 
@@ -61,7 +61,7 @@ To analyse NHS hospital waiting-time trends (Apr–Jul 2025), identify bottlenec
 ## 🧹 Data Preparation (Python)
 
 **Notebook:** `nhs_waiting_Analysis.ipynb`  
-**Final Output:** `NHS_waiting_times_cleaned.csv` (7.7 M rows × 4 columns)
+**Final Output:** `NHS_waiting_times_cleaned.csv` — 7,544 rows × 4 columns (Period, Provider, WaitCategory, Patients), summarising 80.99M total patient-records
 
 ### Steps Performed
 1. Loaded four monthly CSV files using `glob` and merged them.  
@@ -78,7 +78,7 @@ To analyse NHS hospital waiting-time trends (Apr–Jul 2025), identify bottlenec
 | 52+ Weeks | Long waiters |
 | Other | Unclassified / Incomplete data |
 
-**Final shape:** `7.7 M rows × 4 columns`  
+**Final shape:** `7,544 rows × 4 columns` (aggregated from 80.99M patient-records)  
 **Missing values:** 0  
 
 ---
@@ -96,18 +96,15 @@ To analyse NHS hospital waiting-time trends (Apr–Jul 2025), identify bottlenec
 
 ### Patients by Wait Category
 
-	•	78% of records fall under “Other”, indicating unclassified or miscoded wait bands (major data-quality issue).
-	•	17.6% waited 0–18 weeks
-	•	4.2% waited 18–52 weeks
-	•	Very small proportion waited 52+ weeks
+	- 77.8% of records fell under "Other" — traced this to my own wait-band categorization rule, which only matched 12 of the 104 actual band labels (e.g. it caught "Gt 00 To 01 Weeks" but missed "Gt 03 To 04 Weeks"). Caught through validating the rule against every label, before trusting the breakdown.
+	- 17.6% confirmed 0–18 weeks
+	- 4.2% confirmed 18–52 weeks
+	- 0.4% confirmed 52+ weeks
 
-	
-	
 <img width="452" height="162" alt="image" src="https://github.com/user-attachments/assets/b46fc26e-dd51-4373-8188-542b97bd2ffa" />
 
-> Around 78 % of all records fell under “Other,” due to unclassified bands — a key data-quality issue.
-> 
-Although the dashboard suggests performance distribution, nearly 78% of records fall into ‘Other’, which limits meaningful analysis. This highlights a significant data classification issue that needs addressing before drawing conclusions on waiting time performance
+> 77.8% of records fell under "Other" — not an NHS data-quality issue, but a gap in my own band-matching logic, found by validating it against all 104 actual wait-band labels rather than trusting the output at face value. A reminder to check a categorisation rule's coverage before reporting from it.
+
 ### 📈 Trend ( Apr → Jul 2025 )
 - Steady increase in total patients  
 - Short wait ( 0–18 weeks ) dominates volume  
@@ -115,14 +112,13 @@ Although the dashboard suggests performance distribution, nearly 78% of records 
 
 <img width="452" height="168" alt="image" src="https://github.com/user-attachments/assets/7d1cc7a0-9c50-4f57-96f4-ac056d0c9004" />
 
-
 ---
 
 ## 🧾 Aggregation & ETL Rationale
 
 | Challenge | Solution |
 |------------|-----------|
-| Raw 77 M+ rows (~7 GB) slows SQL & Power BI | Aggregated in Python to 7.7 M records |
+| Raw 77 M+ rows (~7 GB) slows SQL & Power BI | Aggregated in Python to 7,544 summary rows |
 | Missing bands mislead totals | Replaced NaN → 0 |
 | Multiple WaitBand columns | Melted to long structure |
 | Performance for Power BI | Loaded into SQL as views |
@@ -136,7 +132,7 @@ Although the dashboard suggests performance distribution, nearly 78% of records 
 
 ## 🧱 SQL Modelling (SSMS 2.0)
 
-**File:** `nhs_waiting_times.sql`
+**File:** `nhs_waiting_time.sql`
 
 | View | Purpose |
 |------|----------|
@@ -148,7 +144,6 @@ Although the dashboard suggests performance distribution, nearly 78% of records 
 A simple **star schema** improves Power BI performance and simplifies joins for slicers and filters.  
 
 <img width="452" height="233" alt="image" src="https://github.com/user-attachments/assets/4d9c6848-eda5-4e4f-ad0d-69f855f09a30" />
- 
 
 ---
 
@@ -157,18 +152,14 @@ A simple **star schema** improves Power BI performance and simplifies joins for 
 | **Executive Overview** | National totals & category trends | 20.51 M patients (July 2025 peak) |
 <img width="817" height="458" alt="Screenshot 2026-02-17 at 14 14 34" src="https://github.com/user-attachments/assets/b0ef25d7-604a-44be-8ec6-58b98ddca891" />
 
-
 | **Provider Performance** | Top 10 trusts | Manchester & Essex handle 20 % load |
 <img width="817" height="459" alt="Screenshot 2026-02-17 at 14 18 37" src="https://github.com/user-attachments/assets/d07f35d1-31bc-4c85-929c-d2eed0066160" />
 
-
-
-| **Wait-Time Distribution** | Performance vs target | 78 % ≤ 18 weeks, 4 % > 1 year |
+| **Wait-Time Distribution** | Performance vs target | 77.8% unclassified ("Other"), 17.6% ≤ 18 weeks, 0.4% waited 52+ weeks |
 
 <img width="816" height="458" alt="Screenshot 2026-02-17 at 14 19 27" src="https://github.com/user-attachments/assets/5225306c-8868-4ca1-8828-97a70c567f0d" />
 
 | **Forecast (Time Series)** | Predictive insight | Stable through Q3 2025 |
-
 
 <img width="813" height="456" alt="Screenshot 2026-02-17 at 14 20 11" src="https://github.com/user-attachments/assets/046ad24e-cf93-4298-8c8f-4050fab5bbfc" />
 
@@ -178,9 +169,9 @@ A simple **star schema** improves Power BI performance and simplifies joins for 
 
 | Insight | Meaning | Recommendation |
 |----------|----------|----------------|
-| Most patients within 18 weeks | NHS meeting core RTT goals | Maintain efficiency planning |
-| 78 % data unclassified | Data gaps at source | Improve digital reporting standards |
-| 4 % > 1 year | Small but persistent backlog | Targeted funding for long-waiters |
+| Only 17.6% confirmed within 18 weeks | The rest aren't mis-performing — they're simply uncategorised by my rule | Fix the categorisation logic before reporting against RTT targets |
+| 77.8% of records unclassified ("Other") | My own band-matching rule only covered 12 of 104 real wait-band labels | Rewrite the rule as a proper numeric-range check, not substring matching |
+| 0.4% waited 52+ weeks | Small but persistent backlog | Targeted funding for long-waiters |
 | High load in few trusts | Regional imbalance | Re-distribute capacity |
 | Stable monthly trend | Operational resilience | Continue monitoring |
 
@@ -188,32 +179,33 @@ A simple **star schema** improves Power BI performance and simplifies joins for 
 
 ## 📘 Deliverables
 
-/data/NHS_waiting_times_cleaned.csv
-/sql/nhs_waiting_times.sql
-/reports/NHS_Hospital_Waiting_Times_Analysis.pdf
-/notebooks/nhs_waiting_Analysis.ipynb
+NHS_waiting_times_cleaned.csv
+nhs_waiting_time.sql
+NHS Hospital Waiting Times Analysis.pdf
+nhs_waiting_Analysis.ipynb
+dashboard/index.html
 
 ---
 
 ## ⚙️ Run the Project
 ```bash
-git clone https://github.com/Combatant94/nhs-hospital-waiting-analysis-2025.git
-cd nhs-hospital-waiting-analysis-2025
+git clone https://github.com/Combatant94/nhs-waiting-times-analysis-2025.git
+cd nhs-waiting-times-analysis-2025
 pip install -r requirements.txt
-jupyter notebook notebooks/nhs_waiting_Analysis.ipynb
+jupyter notebook nhs_waiting_Analysis.ipynb
+```
 
-Power BI Steps
-	1.	Import NHS_waiting_times_cleaned.csv into SQL Server (SSMS 2.0)
-	2.	Run nhs_waiting_times.sql to create views
-	3.	Connect Power BI → SQL Server → Model → Visualise
+**Power BI Steps**
+1. Import NHS_waiting_times_cleaned.csv into SQL Server (SSMS 2.0)
+2. Run nhs_waiting_time.sql to create views
+3. Connect Power BI → SQL Server → Model → Visualise
 
-⸻
+---
 
-✅ Results Summary
-	•	80.99 M total patients analysed (Apr–Jul 2025)
-	•	78 % seen ≤ 18 weeks
-	•	4 % waited > 52 weeks
-	•	July 2025 = peak activity (20.51 M patients)
-	•	SQL + Power BI automate NHS performance tracking
-
-
+✅ **Results Summary**
+- 80.99M total patient-records analysed (Apr–Jul 2025)
+- 77.8% fell into "Other" due to a gap in my own band-matching rule (caught 12 of 104 actual labels) — found through validating the rule, not an NHS data issue
+- 17.6% confirmed seen within 0–18 weeks
+- 0.4% waited 52+ weeks
+- July 2025 = peak activity (20.51M patient-records)
+- SQL + Power BI automate NHS performance tracking
